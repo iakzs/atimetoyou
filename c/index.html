@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Delicious+Handrawn&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+CL:wght@100..400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <title>Customize ATTY</title>
+  <style>
+    .font-preview-option {
+      display: block;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Customize atimetoyou</h1>
+  <form id="customize-form" enctype="multipart/form-data">
+    <label for="title-input">Title:</label>
+    <input type="text" id="title-input" name="title"><br><br>
+    <label for="target-input">Target Time (YYYY-MM-DDTHH:MM:SS):</label>
+    <input type="text" id="target-input" name="target"><br><br>
+    <label for="emoji-input">Emoji:</label>
+    <input type="text" id="emoji-input" name="emoji"><br><br>
+    <label for="color-input">Text Color:</label>
+    <input type="color" id="color-input" name="color"><br><br>
+    <label for="rainbow-input">Rainbow Background:</label>
+    <input type="checkbox" id="rainbow-input" name="rainbow"><br><br>
+    <label for="background-input">Background Color:</label>
+    <input type="color" id="background-input" name="background"><br><br>
+    <label for="background2-input">Background Color 2:</label>
+    <input type="color" id="background2-input" name="background2"><br><br>
+    <label for="image-input">Image URL:</label>
+    <input type="text" id="image-input" name="image"><br><br>
+    <label for="font-input">Font: (beta)</label>
+    <select id="font-input" name="font" onchange="updateFontPreview()">
+      <option value="Delicious Handrawn" style="font-family: 'Delicious Handrawn';" class="font-preview-option">Delicious Handrawn</option>
+      <option value="Roboto" style="font-family: 'Roboto'; font-weight: 100;" class="font-preview-option">Roboto Thin</option>
+      <option value="Roboto" style="font-family: 'Roboto'; font-weight: 300;" class="font-preview-option">Roboto Light</option>
+      <option value="Roboto" style="font-family: 'Roboto'; font-weight: 400;" class="font-preview-option">Roboto Regular</option>
+      <option value="Roboto" style="font-family: 'Roboto'; font-weight: 500;" class="font-preview-option">Roboto Medium</option>
+      <option value="Roboto" style="font-family: 'Roboto'; font-weight: 700;" class="font-preview-option">Roboto Bold</option>
+      <option value="Roboto" style="font-family: 'Roboto'; font-weight: 900;" class="font-preview-option">Roboto Black</option>
+      <option value="Open Sans" style="font-family: 'Open Sans'; font-weight: 300;" class="font-preview-option">Open Sans Light</option>
+      <option value="Open Sans" style="font-family: 'Open Sans'; font-weight: 400;" class="font-preview-option">Open Sans Regular</option>
+      <option value="Open Sans" style="font-family: 'Open Sans'; font-weight: 600;" class="font-preview-option">Open Sans Semi-Bold</option>
+      <option value="Open Sans" style="font-family: 'Open Sans'; font-weight: 700;" class="font-preview-option">Open Sans Bold</option>
+      <option value="Playwrite CL" style="font-family: 'Playwrite CL'; font-weight: 100;" class="font-preview-option">Playwrite Thin</option>
+      <option value="Playwrite CL" style="font-family: 'Playwrite CL'; font-weight: 400;" class="font-preview-option">Playwrite Regular</option>
+    </select><br><br>
+    <label for="size-input">Font Size:</label>
+    <input type="number" id="size-input" name="size" min="10" max="100" step="1" onchange="updatePreview()"><br><br>
+    <label for="align-input">Text Alignment:</label>
+    <select id="align-input" name="alignment">
+      <option value="left">Left</option>
+      <option value="center">Center</option>
+      <option value="right">Right</option>
+    </select><br><br>
+    <label for="animation-input">Animation:</label>
+    <select id="animation-input" name="animation">
+      <option value="none">None</option>
+      <option value="fade-in">Fade In</option>
+      <option value="slide-in">Slide In</option>
+      <option value="rotate">Rotate</option>
+    </select><br><br>
+    <label for="rainbow-style-input">Rainbow Style:</label>
+    <select id="rainbow-style-input" name="rainbowStyle">
+      <option value="default">Default</option>
+      <option value="reverse">Reverse</option>
+      <option value="diagonal">Diagonal</option>
+    </select><br><br>
+    <div id="dynamic-content"></div><br><br>
+    <input type="submit" value="Submit"><br><br>
+    <div id="live-preview">
+      <h2>Live Preview (very limited)</h2>
+      <div id="preview-content">
+        <h1>Loading...</h1>
+      </div>
+    </div>
+  </form>
+
+  <script>
+  function updatePreview() {
+    const emoji = document.querySelector('#emoji-input').value;
+    const color = document.querySelector('#color-input').value;
+    const background = document.querySelector('#background-input').value;
+    const background2 = document.querySelector('#background2-input').value;
+    const font = document.querySelector('#font-input').value;
+    const size = document.querySelector('#size-input').value + 'px';
+    const alignment = document.querySelector('#align-input').value;
+
+    const previewContent = document.querySelector('#preview-content');
+    const previewText = document.createElement('h1');
+    previewText.textContent = emoji;
+    previewText.style.color = color;
+    previewText.style.fontFamily = font;
+    previewText.style.fontSize = size;
+    previewText.style.textAlign = alignment;
+
+    if (background2) {
+      previewContent.style.background = `linear-gradient(to right, ${background}, ${background2})`;
+    } else {
+      previewContent.style.backgroundColor = background;
+    }
+
+    previewContent.innerHTML = '';
+    previewContent.appendChild(previewText);
+  }
+
+  const formInputs = document.querySelectorAll('input, select');
+  formInputs.forEach(input => {
+    input.addEventListener('change', updatePreview);
+  });
+
+  updatePreview();
+
+  document.querySelector('#rainbow-input').addEventListener('change', (event) => {
+    const rainbowChecked = event.target.checked;
+    document.querySelector('#background-input').disabled = rainbowChecked;
+    document.querySelector('#background2-input').disabled = rainbowChecked;
+  });
+
+  document.querySelector('#customize-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const targetTime = document.querySelector('#target-input').value;
+    const emoji = document.querySelector('#emoji-input').value;
+    const color = document.querySelector('#color-input').value;
+    const background = document.querySelector('#background-input').value;
+    const background2 = document.querySelector('#background2-input').value;
+    const title = document.querySelector('#title-input').value;
+    const rainbow = document.querySelector('#rainbow-input').checked;
+    const font = document.querySelector('#font-input').value;
+    const size = document.querySelector('#size-input').value;
+    const align = document.querySelector('#align-input').value;
+    const image = document.querySelector('#image-input').value;
+    const animation = document.querySelector('#animation-input').value;
+    const rainbowStyle = document.querySelector('#rainbow-style-input').value;
+    
+    const url = `https://iakzs.dev/atimetoyou?target=${encodeURIComponent(targetTime)}&emoji=${encodeURIComponent(emoji)}&color=${encodeURIComponent(color)}&background=${encodeURIComponent(background)}&background2=${encodeURIComponent(background2)}&title=${encodeURIComponent(title)}&israinbow=${encodeURIComponent(rainbow)}&font=${encodeURIComponent(font)}&size=${encodeURIComponent(size)}&align=${encodeURIComponent(align)}&image=${encodeURIComponent(image)}&animation=${encodeURIComponent(animation)}&rainbowStyle=${encodeURIComponent(rainbowStyle)}`;
+    window.location.href = url;
+  });
+
+  </script>
+</body>
+</html>
